@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Tuo Tè Perfetto</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,200;0,400;0,600;1,200;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f5ee;
+    --bg2: #e4ede0;
+    --green-deep: #2d5016;
+    --green-mid: #4a7c2f;
+    --green-light: #7aab52;
+    --green-pale: #c4ddb4;
+    --green-mist: #dcefd4;
+    --text: #1e3a0f;
+    --text-soft: #4d6b38;
+    --accent: #a05c1a;
+    --white: #fafdf7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(122,171,82,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 100%, rgba(74,124,47,0.18) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='1' fill='%234a7c2f' fill-opacity='0.06'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+  }
+
+  .container { max-width: 660px; width: 100%; }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .leaf-row {
+    font-size: 1.4rem;
+    letter-spacing: 6px;
+    margin-bottom: 10px;
+    opacity: 0.6;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-weight: 200;
+    color: var(--green-deep);
+    line-height: 1.1;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--green-mid);
+    font-weight: 400;
+  }
+
+  .header p {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-soft);
+    letter-spacing: 0.5px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 28px;
+    animation: fadeDown 0.7s 0.15s ease both;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    margin-bottom: 8px;
+    font-weight: 300;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--green-pale);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1.5px solid var(--green-pale);
+    border-radius: 16px;
+    padding: 44px 48px;
+    box-shadow: 0 4px 30px rgba(74,124,47,0.08), 0 1px 4px rgba(45,80,22,0.06);
+    animation: fadeUp 0.55s ease both;
+  }
+
+  @media (max-width: 520px) { .card { padding: 28px 22px; } }
+
+  .question-num {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--green-mist);
+    color: var(--green-mid);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+
+  .question-text {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.2rem, 3.5vw, 1.65rem);
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--green-deep);
+    margin-bottom: 32px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1.5px solid var(--bg2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--white);
+    color: var(--text);
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.45;
+    width: 100%;
+  }
+
+  .option:hover {
+    border-color: var(--green-light);
+    background: var(--green-mist);
+    transform: translateX(3px);
+  }
+
+  .option.selected {
+    border-color: var(--green-mid);
+    background: var(--green-mist);
+  }
+
+  .option-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--green-mid);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    letter-spacing: 0;
+  }
+
+  .option.selected .option-letter {
+    background: var(--green-mid);
+    color: white;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 32px;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    border: 1.5px solid var(--green-pale);
+    background: white;
+    color: var(--text-soft);
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.2s;
+  }
+
+  .btn:hover { border-color: var(--green-mid); color: var(--green-mid); }
+
+  .btn-primary {
+    background: var(--green-mid);
+    border-color: var(--green-mid);
+    color: white;
+  }
+
+  .btn-primary:hover { background: var(--green-deep); border-color: var(--green-deep); }
+  .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* RESULT */
+  .result { text-align: center; animation: fadeUp 0.7s ease both; }
+
+  .result-badge {
+    display: inline-block;
+    background: var(--green-mist);
+    color: var(--green-mid);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: 400;
+  }
+
+  .result-tea-name {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 7vw, 3.6rem);
+    font-weight: 200;
+    color: var(--green-deep);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .result-tea-origin {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
+  .result-tea-icon {
+    font-size: 4rem;
+    display: block;
+    margin: 14px 0;
+  }
+
+  .result-desc {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--text-soft);
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+
+  .result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .tag {
+    padding: 5px 14px;
+    background: var(--green-mist);
+    border: 1px solid var(--green-pale);
+    border-radius: 20px;
+    font-size: 0.73rem;
+    color: var(--green-mid);
+    letter-spacing: 0.5px;
+  }
+
+  .result-how {
+    background: var(--bg);
+    border: 1.5px solid var(--green-pale);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .result-how h4 {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+
+  .result-how p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+
+  .result-divider {
+    height: 1px;
+    background: var(--green-pale);
+    margin: 24px 0;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="leaf-row">🍃 🌿 🍃</div>
+    <h1>Il Tuo <em>Tè</em> Perfetto</h1>
+    <p>Rispondi a poche domande e scopri quale tè è fatto per te</p>
+  </div>
+
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progress-label">Domanda 1 di 6</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <div class="card" id="question-card">
+      <div class="question-num" id="q-num">Domanda 1</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="options-wrap"></div>
+      <div class="nav">
+        <button class="btn btn-primary" id="btn-next" disabled onclick="nextQuestion()">Avanti →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="result" class="card result hidden"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Come preferisci iniziare la tua giornata?",
+    options: [
+      { label: "Con qualcosa di energico che mi sveglia subito 💥", tags: ["energico","bold"] },
+      { label: "Con calma, qualcosa di caldo e rassicurante ☁️", tags: ["delicato","rilassante"] },
+      { label: "Con qualcosa di leggero e fresco 🌬️", tags: ["fresco","leggero"] },
+      { label: "Con un rituale: profumo, cura, cerimonia ✨", tags: ["aromatico","cerimonia"] }
+    ]
+  },
+  {
+    text: "Quale sapore ti attira di più?",
+    options: [
+      { label: "Robusto e pieno, con un retrogusto persistente", tags: ["bold","malty"] },
+      { label: "Floreale e delicato, quasi etereo 🌸", tags: ["floreale","delicato"] },
+      { label: "Erbaceo e fresco, che ricorda la natura 🌿", tags: ["fresco","erbaceo"] },
+      { label: "Affumicato, profondo, misterioso 🔥", tags: ["fumé","complesso"] }
+    ]
+  },
+  {
+    text: "In quale momento della giornata vorresti il tuo tè ideale?",
+    options: [
+      { label: "Al mattino, per partire alla grande 🌅", tags: ["energico","mattino"] },
+      { label: "A metà pomeriggio, come pausa rigenerante", tags: ["pomeriggio","rilassante"] },
+      { label: "Dopo cena, per concludere in tranquillità 🌙", tags: ["sera","delicato"] },
+      { label: "Lo berrei a qualsiasi ora della giornata!", tags: ["versatile","leggero"] }
+    ]
+  },
+  {
+    text: "Riguardo alla caffeina, cosa preferisci?",
+    options: [
+      { label: "Alta: ho bisogno di energia e concentrazione ⚡", tags: ["energico","caffeina-alta"] },
+      { label: "Media, un po' di sprint senza esagerare", tags: ["medio","caffeina-media"] },
+      { label: "Bassa, mi interessa il gusto, non l'effetto", tags: ["delicato","caffeina-bassa"] },
+      { label: "Zero caffeina, voglio solo rilassarmi 😌", tags: ["rilassante","no-caffeina"] }
+    ]
+  },
+  {
+    text: "Dove ti immagini mentre sorseggi il tuo tè ideale?",
+    options: [
+      { label: "In un elegante tea salon, con porcellana fine 🏮", tags: ["cerimonia","floreale"] },
+      { label: "In giardino, tra il verde e la natura 🌳", tags: ["erbaceo","fresco"] },
+      { label: "Sul divano con un libro e una coperta 📚", tags: ["rilassante","delicato"] },
+      { label: "Alla scrivania, mentre lavoro o studio 💻", tags: ["energico","bold"] }
+    ]
+  },
+  {
+    text: "Quale di queste sensazioni ti incuriosisce di più?",
+    options: [
+      { label: "Un liquore intenso, ambrato o quasi nero nella tazza", tags: ["bold","malty"] },
+      { label: "Un infuso chiaro e luminoso, quasi trasparente ✨", tags: ["delicato","leggero"] },
+      { label: "Un verde brillante, vivo e vibrante 🍃", tags: ["erbaceo","fresco"] },
+      { label: "Un profumo avvolgente che riempie la stanza", tags: ["aromatico","floreale","fumé"] }
+    ]
+  }
+];
+
+const teas = [
+  {
+    name: "Assam",
+    origin: "India · Regione Assam",
+    icon: "🍵",
+    tags: ["energico","bold","malty","caffeina-alta","mattino"],
+    desc: "Robusto e maltato, l'Assam è il tè per chi vuole partire in quarta. Con il suo colore ambrato intenso e il corpo pieno, è la scelta dei mattinieri convinti e delle menti ambiziose.",
+    how: "Temperatura 95°C · Infusione 3–5 minuti · Ottimo anche con un goccio di latte per smorzarne l'intensità."
+  },
+  {
+    name: "Gyokuro",
+    origin: "Giappone · Uji",
+    icon: "🍃",
+    tags: ["cerimonia","delicato","floreale","caffeina-media","pomeriggio"],
+    desc: "Il gioiello del Giappone. Coltivato all'ombra per settimane, il Gyokuro sviluppa un carattere misterioso e umami profondo. Per chi ama i rituali e la bellezza nelle piccole cose.",
+    how: "Temperatura 55–65°C · Infusione 1–2 minuti · In piccole tazze, lentamente. Nessuna aggiunta."
+  },
+  {
+    name: "Darjeeling First Flush",
+    origin: "India · Himalaya",
+    icon: "🌸",
+    tags: ["floreale","leggero","delicato","caffeina-bassa","pomeriggio"],
+    desc: "Lo Champagne dei tè: fresco, floreale e luminoso. Per i palati fini che cercano eleganza e leggerezza in ogni sorso, con quei delicati aromi muscatel unici al mondo.",
+    how: "Temperatura 85°C · Infusione 2–3 minuti · Sempre in purezza, senza latte."
+  },
+  {
+    name: "Lapsang Souchong",
+    origin: "Cina · Fujian",
+    icon: "🔥",
+    tags: ["fumé","complesso","aromatico","bold","sera"],
+    desc: "Affumicato sopra legno di pino, il Lapsang Souchong è il tè per gli spiriti avventurosi. Evoca foreste notturne e racconti da ascoltare al buio. Non per tutti, ma indimenticabile.",
+    how: "Temperatura 95°C · Infusione 3–4 minuti · Prova in abbinamento a formaggi stagionati o cioccolato fondente."
+  },
+  {
+    name: "Sencha",
+    origin: "Giappone",
+    icon: "🌿",
+    tags: ["erbaceo","fresco","leggero","no-caffeina","versatile"],
+    desc: "Il tè verde per eccellenza. Fresco, erbaceo, con un finale leggermente astringente. Per chi ama la semplicità e vuole restare in connessione con la natura in ogni sorso.",
+    how: "Temperatura 75–80°C · Infusione 1–2 minuti · Si può re-infondere 2–3 volte; ogni passaggio rivela sfumature diverse."
+  },
+  {
+    name: "Camomilla & Tiglio",
+    origin: "Tisana · Europa",
+    icon: "🌼",
+    tags: ["rilassante","no-caffeina","sera","delicato"],
+    desc: "Non un tè, ma un abbraccio caldo in tazza. Profumo di fiori di campo, nessuna caffeina, pura dolcezza naturale. Per le sere in cui vuoi lasciare il mondo fuori dalla porta.",
+    how: "Temperatura 95°C · Infusione 5–7 minuti · Con un cucchiaino di miele d'acacia."
+  }
+];
+
+let current = 0, answers = [], selectedIdx = null;
+
+function renderQuestion() {
+  const q = questions[current];
+  document.getElementById('q-num').textContent = `Domanda ${current + 1} di ${questions.length}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress-label').textContent = `Domanda ${current + 1} di ${questions.length}`;
+  const pct = Math.round((current / questions.length) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const wrap = document.getElementById('options-wrap');
+  wrap.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt.label}</span>`;
+    btn.onclick = () => selectOption(i, btn);
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById('btn-next').disabled = true;
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = 'fadeUp 0.45s ease both'; });
+}
+
+function selectOption(idx, el) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIdx = idx;
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (selectedIdx === null) return;
+  answers.push(questions[current].options[selectedIdx].tags);
+  selectedIdx = null;
+  current++;
+  if (current < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const scores = {};
+  teas.forEach((t, i) => scores[i] = 0);
+  answers.flat().forEach(tag => {
+    teas.forEach((t, i) => { if (t.tags.includes(tag)) scores[i]++; });
+  });
+  const best = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+  const tea = teas[best];
+
+  document.getElementById('quiz').classList.add('hidden');
+  const res = document.getElementById('result');
+  res.classList.remove('hidden');
+  res.innerHTML = `
+    <div class="result-badge">🍃 Il tuo tè ideale</div>
+    <div class="result-tea-name">${tea.name}</div>
+    <div class="result-tea-origin">${tea.origin}</div>
+    <span class="result-tea-icon">${tea.icon}</span>
+    <p class="result-desc">${tea.desc}</p>
+    <div class="result-tags">${tea.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+    <div class="result-how">
+      <h4>🫖 Come prepararlo</h4>
+      <p>${tea.how}</p>
+    </div>
+    <div class="result-divider"></div>
+    <button class="btn" onclick="restart()">← Ricomincia il quiz</button>
+  `;
+}
+
+function restart() {
+  current = 0; answers = []; selectedIdx = null;
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
